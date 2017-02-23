@@ -1,0 +1,31 @@
+---
+
+- name: apt-get update
+  apt:
+    update_cache: yes
+
+- name: disable ufw
+  service: name=ufw state=stopped enabled=no
+  ignore_errors: true
+
+
+- name: install prereq packages
+  apt:
+    name: zip,unzip,curl,ipset,bzip2,python-netaddr,python-pip
+    state: present
+  tags:
+    - packages
+
+# - name: update SElinux
+#   shell: sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
+#   when: ansible_distribution == 'CentOS'
+
+# - name: setenforce 0
+#   shell: setenforce 0
+#   when: ansible_distribution == 'CentOS'
+
+- name: enable passwordless sudo access
+  shell: echo '%adm ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admins
+  #lineinfile: "dest=/etc/sudoers state=present regexp='^%adminl' line='%admin ALL=(ALL) NOPASSWD: ALL'"
+  tags:
+    - sudo
