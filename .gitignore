@@ -1,4 +1,4 @@
-../*.retry
+**/*.retry
 **/*.key
 **/*.pem
 **/*.crt

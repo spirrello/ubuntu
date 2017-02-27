@@ -8,5 +8,6 @@ vmhost
 
 [cluster]
 u-01
-#u-02
-#u-03
+u-02
+u-03
+u-04
