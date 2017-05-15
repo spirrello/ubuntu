@@ -36,7 +36,7 @@
 
 - name: install prereq packages
   apt:
-    name: tar,xz,zip,unzip,curl,ipset,bzip2,lldpad,net-tools,bind-utils
+    name: bzip2,tar,zip,unzip,curl,ipset,lldpad,net-tools
     state: present
   ignore_errors: true
   tags:
@@ -45,22 +45,19 @@
 
 - name: install contiv prereq packages
   apt:
-    name: ansible,bzip2,python-netaddr,git,python-pip
+    name: python-netaddr,git,python-pip
     state: present
   ignore_errors: true
   tags:
     - packages
 
+#Commenting out temporarily.
+# - name: update SElinux
+#   shell: sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
+#   tags:
+#     - update_selinux
 
-- name: update SElinux
-  shell: sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
-  tags:
-    - update_selinux
-
-- name: setenforce 0
-  shell: setenforce 0
-  tags:
-    - update_selinux
 # - name: setenforce 0
 #   shell: setenforce 0
-#   when: ansible_distribution == 'CentOS'
+#   tags:
+#     - update_selinux

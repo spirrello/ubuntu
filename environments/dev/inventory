@@ -9,9 +9,14 @@ at4d-lpk8sn02
 at4d-lpk8sn03
 at4d-lpk8sn04
 
-[etcd:children]
-masters
+[etcd]
+at4d-lvk8se01
+at4d-lvk8se02
+at4d-lvk8se03
+at4d-lvk8se04
+at4d-lvk8se05
 
 [cluster:children]
 masters
 workers
+etcd
