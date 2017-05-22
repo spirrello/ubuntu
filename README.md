@@ -13,7 +13,7 @@ This repo contains prereqs for standardizing Ubuntu deployments.
   - bond_mode
     - This setting will determine which mode for bonding NICs.  In this examlple we use mode 0 for a round robin approach for transmitting data on the wire.
   - bond_miimon
-    - Frequency of link monoitoring.  Kernel.org recommends a value of 100.
+    - Frequency of link monoitoring in ms.  Kernel.org recommends a value of 100.
 
 
   ansible-playbook -i environments/dev/inventory --limit at4d-lpk8sn03 configure_bonding.yml -u ubuntu -k -K --extra-vars '{"nic_1":"enp5s0f0", "nic_2":"enp5s0f1", "bond_nic":"bond0", "address":"10.27.9.123", "mask":"255.255.255.0", "network":"10.155.9.0", "broadcast":"10.155.9.255", "gateway":"10.155.9.1", "dns_search":"acme.dev acme.tech", "dns_servers":"10.27.137.151 10.27.137.152", "bond_mode":"0", "bond_miimon":"100"}'
