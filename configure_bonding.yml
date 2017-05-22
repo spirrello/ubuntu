@@ -1,0 +1,5 @@
+---
+- hosts: bonding
+  become: yes
+  roles:
+    - bonding

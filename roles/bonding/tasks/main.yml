@@ -1,0 +1,51 @@
+---
+
+- name: apt-get update
+  apt:
+    update_cache: yes
+  tags:
+    - apt_update
+
+
+- name: install ifenslave packages
+  apt:
+    name: ifenslave
+    state: present
+  ignore_errors: true
+  tags:
+    - ifenslave
+
+
+- name: add kernel modules
+  lineinfile:
+    path: /etc/modules
+    line: "{{item}}"
+  with_items:
+    - "loop"
+    - "lp"
+    - "rtc"
+    - "bonding"
+  ignore_errors: true
+  tags:
+    - kernel_modules
+
+
+- name: Copy network service template to all masters
+  template: src=roles/bonding/templates/interfaces.j2 dest=/etc/network/interfaces
+  tags:
+    - copy_network_interfaces
+
+
+- name: load modprobe module
+  command: modprobe bonding
+  tags:
+    - load_bonding_module
+
+
+- name: restart server
+  shell: reboot
+  tags:
+    - restart_server
+
+- name: waiting for server to come back
+  local_action: wait_for host={{ inventory_hostname }} state=started

@@ -1,0 +1,4 @@
+######### NIC BONDING FOR UBUNTU #########
+
+bond_mode: 0
+bond-miimon: 100

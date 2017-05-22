@@ -1,0 +1,30 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto {{nic_1}}
+iface {{nic_1}} inet manual
+bond-master {{bond_nic}}
+
+auto {{nic_2}}
+iface {{nic_2}} inet manual
+bond-master {{bond_nic}}
+
+auto {{bond_nic}}
+iface {{bond_nic}} inet static
+      address {{address}}
+      netmask {{mask}}
+      network {{network}}
+      broadcast {{broadcast}}
+      gateway {{gateway}}
+      dns-search {{dns_search}}
+      dns-nameservers {{dns_servers}}
+      bond-mode {{bond_mode}}
+      bond-miimon {{bond_miimon}}
+      bond-slaves {{nic_1}} {{nic_2}}

@@ -16,7 +16,12 @@ at4d-lvk8se03
 at4d-lvk8se04
 at4d-lvk8se05
 
+
 [cluster:children]
 masters
 workers
 etcd
+
+
+[bonding:children]
+workers

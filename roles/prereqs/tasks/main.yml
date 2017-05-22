@@ -1,8 +1,20 @@
 ---
 
+- name: add admin file
+  file:
+    path: /etc/sudoers.d/admins
+    state: touch
+  tags:
+    - admin_file
+
+
 - name: enable passwordless sudo access
-  shell: echo '%adm ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admins
-  #lineinfile: "dest=/etc/sudoers state=present regexp='^%adminl' line='%admin ALL=(ALL) NOPASSWD: ALL'"
+  lineinfile:
+    path: /etc/sudoers.d/admins
+    line: "{{item}}"
+  with_items:
+    - "%adm ALL=(ALL) NOPASSWD:ALL"
+  ignore_errors: true
   tags:
     - sudo
 
@@ -17,14 +29,21 @@
   tags:
     - disable_ipv6
 
+
 - name: sysctl -p
   shell: sysctl -p
   tags:
     - sysctl_reload
 
-- name: disable ufw
-  service: name=ufw state=stopped enabled=no
-  ignore_errors: true
+
+- name: disable ufw 
+  systemd:
+    state: stopped
+    enabled: no
+    daemon_reload: no
+    name: ufw
+  tags:
+    - stop_firewall
 
 
 - name: apt-get update
@@ -36,7 +55,7 @@
 
 - name: install prereq packages
   apt:
-    name: bzip2,tar,zip,unzip,curl,ipset,lldpad,net-tools
+    name: ifenslave,bzip2,tar,zip,unzip,curl,ipset,lldpad,net-tools
     state: present
   ignore_errors: true
   tags:
@@ -51,13 +70,4 @@
   tags:
     - packages
 
-#Commenting out temporarily.
-# - name: update SElinux
-#   shell: sudo sed -i s/SELINUX=enforcing/SELINUX=permissive/g /etc/selinux/config
-#   tags:
-#     - update_selinux
 
-# - name: setenforce 0
-#   shell: setenforce 0
-#   tags:
-#     - update_selinux
